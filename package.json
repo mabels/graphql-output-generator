@@ -1,0 +1,88 @@
+{
+  "name": "graphql-output-generator",
+  "version": "1.0.0",
+  "description": "A query output generator from graphql output types. ",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "typings": "lib/index.d.ts",
+  "license": "AFL-2.0",
+  "author": {
+    "name": "Meno Abels"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mabels/graphql-output-generator.git"
+  },
+  "homepage": "https://github.com/mabels/graphql-output-generator#readme",
+  "private": true,
+  "engines": {
+    "node": ">8.11.3"
+  },
+  "scripts": {
+    "clean": "rimraf lib esm",
+    "build": "yarn build:commonjs && yarn build:esm",
+    "build:commonjs": "tsc --project .",
+    "build:esm": "tsc --project . --outdir esm --module esnext",
+    "test": "jest -c jest.unit.js",
+    "test:integration": "jest -c jest.integration.js",
+    "lint": "tslint --project .",
+    "prerelease": "git checkout master && git pull --ff-only origin master && yarn && yarn clean && yarn lint && yarn test && yarn build",
+    "release": "standard-version",
+    "postrelease": "git push --follow-tags origin master && npm publish"
+  },
+  "dependencies": {
+    "graphql": "^0.13.2",
+    "tslib": "^1.9.3"
+  },
+  "devDependencies": {
+    "rimraf": "^2.6.1",
+    "typescript": "3.2.1",
+    "@types/jest": "23.3.10",
+    "@types/node": "10.12.12",
+    "@types/graphql": "^0.13.0",
+    "husky": "1.2.0",
+    "jest": "23.6.0",
+    "jest-cli": "23.6.0",
+    "lint-staged": "8.0.4",
+    "prettier": "1.15.3",
+    "standard-version": "4.4.0",
+    "ts-jest": "23.10.5",
+    "ts-loader": "5.3.0",
+    "tslint": "5.11.0",
+    "tslint-config-prettier": "1.17.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.ts": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true
+  },
+  "renovate": {
+    "extends": [
+      "config:base"
+    ],
+    "semanticPrefix": "chore:",
+    "devDependencies": {
+      "automerge": true
+    },
+    "packageRules": [
+      {
+        "packagePatterns": [
+          "@types/"
+        ],
+        "automerge": true
+      }
+    ]
+  },
+  "resolutions": {
+    "merge": ">=1.2.1"
+  }
+}
