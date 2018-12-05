@@ -3,8 +3,13 @@ import { graphqlOutputFromType } from './graphql-output-from-type';
 
 test('generate output', () => {
   const schema = createSchema({
-    queries: dummyQuery,
+    queries: dummyQuery
   });
   const ret = graphqlOutputFromType(schema, dummyOutputType);
-  expect(ret.split(/\s*[\n\r]\s*/)).toEqual(['dummy', 'nested {', 'nestedString', '}']);
+  expect(ret.split(/\s*[\n\r]\s*/)).toEqual([
+    'dummy',
+    'nested {',
+    'nestedString',
+    '}'
+  ]);
 });

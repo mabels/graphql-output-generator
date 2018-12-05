@@ -1,7 +1,6 @@
-
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, '__esModule', { value: true });
 
 Object.assign(exports, {
   hereUpdateLocation: () => ({}),
-  hereGetLocation: () => ({}),
+  hereGetLocation: () => ({})
 });
