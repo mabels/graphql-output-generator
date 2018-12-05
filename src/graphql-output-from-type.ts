@@ -10,12 +10,19 @@ export interface GenerateOutputType {
   (t: GraphQLObjectType): string;
 }
 
-export function graphqlOutputFromType(schema: GraphQLSchema, t: GraphQLObjectType, out: string[] = [], level = 0): string {
+export function graphqlOutputFromType(
+  schema: GraphQLSchema,
+  t: GraphQLObjectType,
+  out: string[] = [],
+  level = 0
+): string {
   if (t.getFields) {
     Object.entries(t.getFields()).forEach(([_, v]) => {
-      const ql = v as any as Prepare;
+      const ql = (v as any) as Prepare;
       if (!(ql.name && ql.type)) {
-        throw new Error(`graphqlOutputFromType can not traverse without name and type`);
+        throw new Error(
+          `graphqlOutputFromType can not traverse without name and type`
+        );
       }
       // const found = schema.getTypeMap()[clean(ql.type)] as GraphQLObjectType;
       // const o = [];
@@ -42,8 +49,11 @@ export function graphqlOutputFromType(schema: GraphQLSchema, t: GraphQLObjectTyp
   return out.join('\n');
 }
 
-export function generateOutputFromSchema(schema: GraphQLSchema): GenerateOutputType {
-  return (t: GraphQLObjectType) => {
+export function generateOutputFromSchema(
+  schema: GraphQLSchema,
+  t: GraphQLObjectType
+): () => string {
+  return () => {
     return graphqlOutputFromType(schema, t);
   };
 }
