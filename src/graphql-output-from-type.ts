@@ -49,6 +49,7 @@ export function graphqlOutputFromType(
   return out.join('\n');
 }
 
+/*
 export function generateOutputFromSchema(
   schema: GraphQLSchema,
   t: GraphQLObjectType
@@ -57,3 +58,4 @@ export function generateOutputFromSchema(
     return graphqlOutputFromType(schema, t);
   };
 }
+*/
