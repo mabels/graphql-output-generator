@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.8"></a>
+## [1.0.8](https://github.com/mabels/graphql-output-generator/compare/v1.0.7...v1.0.8) (2018-12-05)
+
+
+### Bug Fixes
+
+* remove dependency to graphql on inject-generated-output ([8715e0e](https://github.com/mabels/graphql-output-generator/commit/8715e0e))
+
+
+
 <a name="1.0.7"></a>
 ## [1.0.7](https://github.com/mabels/graphql-output-generator/compare/v1.0.6...v1.0.7) (2018-12-05)
 
