@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/mabels/graphql-output-generator#readme",
   "engines": {
-    "node": ">8.11.3"
+    "node": ">8.0.0"
   },
   "scripts": {
     "clean": "rimraf lib esm",
