@@ -14,7 +14,6 @@
     "url": "https://github.com/mabels/graphql-output-generator.git"
   },
   "homepage": "https://github.com/mabels/graphql-output-generator#readme",
-  "private": true,
   "engines": {
     "node": ">8.11.3"
   },
