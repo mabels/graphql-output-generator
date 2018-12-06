@@ -1,7 +1,4 @@
-import {
-  GenerateGraphqlOutputItem,
-  DeclareGraphqlOutputItem
-} from './generate-graphql-output';
+import { GenerateGraphqlOutputItem, DeclareGraphqlOutputItem } from './types';
 
 export class QueryCollector {
   public readonly queries: GenerateGraphqlOutputItem[] = [];

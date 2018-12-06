@@ -4,7 +4,6 @@ import {
   dummyQuery
 } from './create-schema';
 import { graphql } from 'graphql';
-import { stringify } from 'querystring';
 
 test('regression dummy name error', async () => {
   const schema = createQuerySchema(dummyQuery);

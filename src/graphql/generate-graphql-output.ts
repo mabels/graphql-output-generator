@@ -1,29 +1,12 @@
 import * as path from 'path';
-import { indent, indents } from './indent';
+import { indent, indents } from '../indent';
+import { DeclareGraphqlOutputItem, Invocation } from '../types';
 // import { generateOutputFromSchema } from './graphql-output-from-type';
 // import { createSchema } from './create-schema';
 // import { QueryCollector } from './query-collector';
 
-export interface Invocation {
-  readonly path: string;
-  readonly varName: string;
-}
-
-export interface DeclareGraphqlOutputItem {
-  readonly queryField?: Invocation;
-  readonly mutationField?: Invocation;
-
-  readonly query: Invocation;
-
-  readonly output: Invocation;
-}
-
 function fieldInvocation(d: DeclareGraphqlOutputItem): Invocation {
   return d.queryField || d.mutationField;
-}
-
-export interface GenerateGraphqlOutputItem extends DeclareGraphqlOutputItem {
-  readonly outputQuery: string;
 }
 
 function schema(style: 'queries' | 'mutations', fields: string[]): string[] {
@@ -59,7 +42,7 @@ export function generateGraphqlOutput(
       2,
       `const { QueryCollector } = require('${path.join(
         __dirname,
-        './query-collector'
+        '../query-collector'
       )}');`
     )
   );

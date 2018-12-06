@@ -1,4 +1,4 @@
-import { injectOutput } from './inject-output';
+import { injectOutput } from '../inject-output';
 
 export const queryGetLocation = injectOutput<{}, {}>(
   (fetcher, input, output) => {

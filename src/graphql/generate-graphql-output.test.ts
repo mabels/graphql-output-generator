@@ -1,12 +1,9 @@
-import {
-  generateGraphqlOutput,
-  DeclareGraphqlOutputItem
-} from './generate-graphql-output';
-import { QueryCollector } from './query-collector';
+import { generateGraphqlOutput } from './generate-graphql-output';
+import { QueryCollector } from '../query-collector';
 import { createSchema, dummyQuery, dummyOutputType } from './create-schema';
 import { graphqlOutputFromType } from './graphql-output-from-type';
-import { Fetcher } from './types';
-import { injectOutput } from './inject-output';
+import { Fetcher, DeclareGraphqlOutputItem } from '../types';
+import { injectOutput } from '../inject-output';
 import {
   queryGetLocation,
   queryUpdateLocation

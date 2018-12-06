@@ -1,5 +1,5 @@
 import { GraphQLObjectType, GraphQLSchema } from 'graphql';
-import { indent } from './indent';
+import { indent } from '../indent';
 
 export interface Prepare {
   readonly type?: GraphQLObjectType;
