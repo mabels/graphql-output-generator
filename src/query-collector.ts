@@ -1,20 +1,27 @@
-import { GenerateGraphqlOutputItem } from './generate-graphql-output';
+import {
+  GenerateGraphqlOutputItem,
+  DeclareGraphqlOutputItem
+} from './generate-graphql-output';
 
 export class QueryCollector {
   public readonly queries: GenerateGraphqlOutputItem[] = [];
 
-  public collect<T>(jsonGenerateGraphqlOutputItem: string, q: string): void {
+  public collect<T>(d: DeclareGraphqlOutputItem, q: string): void {
     this.queries.push({
-      ...JSON.parse(jsonGenerateGraphqlOutputItem),
-      gqQuery: q
+      ...d,
+      outputQuery: q
     });
   }
 
   writeInjectJavascript(): string {
     const ret: string[] = [];
     this.queries.forEach(item => {
-      ret.push(`const { ${item.queryMethod} } = require('${item.queryPath}');`);
-      ret.push(`${item.queryMethod}.inject(${JSON.stringify(item.gqQuery)});`);
+      ret.push(
+        `const { ${item.query.varName} } = require('${item.query.path}');`
+      );
+      ret.push(
+        `${item.query.varName}.inject(${JSON.stringify(item.outputQuery)});`
+      );
     });
     return ret.join('\n');
   }

@@ -1,4 +1,7 @@
-import { generateGraphqlOutput } from './generate-graphql-output';
+import {
+  generateGraphqlOutput,
+  DeclareGraphqlOutputItem
+} from './generate-graphql-output';
 import { QueryCollector } from './query-collector';
 import { createSchema, dummyQuery, dummyOutputType } from './create-schema';
 import { graphqlOutputFromType } from './graphql-output-from-type';
@@ -34,24 +37,34 @@ const testQuery = injectOutput(
 
 test('test generate output', async () => {
   // execa.shellSync('yarn run compile');
-  const toGenerate = [
+  const toGenerate: DeclareGraphqlOutputItem[] = [
     {
-      queryField: 'hereGetLocation',
-      resolverPath: './generate-graphql-output.helper-test',
-      queryMethod: 'queryGetLocation',
-      queryPath: './test-queries.helper-test',
-      outputType: 'dummyOutputType',
-      outputPath: './create-schema',
-      gqPath: './generate-graphql-output.helper-test'
+      queryField: {
+        varName: 'hereGetLocation',
+        path: './generate-graphql-output.helper-test'
+      },
+      query: {
+        varName: 'queryGetLocation',
+        path: './test-queries.helper-test'
+      },
+      output: {
+        varName: 'dummyOutputType',
+        path: './create-schema'
+      }
     },
     {
-      mutationField: 'hereUpdateLocation',
-      resolverPath: './generate-graphql-output.helper-test',
-      queryMethod: 'queryUpdateLocation',
-      queryPath: './test-queries.helper-test',
-      outputType: 'dummyOutputType',
-      outputPath: './create-schema',
-      gqPath: './generate-graphql-output.helper-test'
+      mutationField: {
+        varName: 'hereUpdateLocation',
+        path: './generate-graphql-output.helper-test'
+      },
+      query: {
+        varName: 'queryUpdateLocation',
+        path: './test-queries.helper-test'
+      },
+      output: {
+        varName: 'dummyOutputType',
+        path: './create-schema'
+      }
     }
   ];
   const jsEval = generateGraphqlOutput(toGenerate);
@@ -66,11 +79,11 @@ test('test generate output', async () => {
   expect(qc.queries).toEqual([
     {
       ...toGenerate[0],
-      gqQuery: queryOutput
+      outputQuery: queryOutput
     },
     {
       ...toGenerate[1],
-      gqQuery: queryOutput
+      outputQuery: queryOutput
     }
   ]);
   try {

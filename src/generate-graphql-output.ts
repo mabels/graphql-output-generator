@@ -4,16 +4,26 @@ import { indent, indents } from './indent';
 // import { createSchema } from './create-schema';
 // import { QueryCollector } from './query-collector';
 
-export interface GenerateGraphqlOutputItem {
-  readonly queryField?: string;
-  readonly resolverPath: string;
-  readonly queryPath: string;
-  readonly queryMethod: string;
-  readonly mutationField?: string;
-  readonly gqPath: string;
-  readonly outputType: string;
-  readonly outputPath: string;
-  gqQuery?: string;
+export interface Invocation {
+  readonly path: string;
+  readonly varName: string;
+}
+
+export interface DeclareGraphqlOutputItem {
+  readonly queryField?: Invocation;
+  readonly mutationField?: Invocation;
+
+  readonly query: Invocation;
+
+  readonly output: Invocation;
+}
+
+function fieldInvocation(d: DeclareGraphqlOutputItem): Invocation {
+  return d.queryField || d.mutationField;
+}
+
+export interface GenerateGraphqlOutputItem extends DeclareGraphqlOutputItem {
+  readonly outputQuery: string;
 }
 
 function schema(style: 'queries' | 'mutations', fields: string[]): string[] {
@@ -30,7 +40,7 @@ function schema(style: 'queries' | 'mutations', fields: string[]): string[] {
 }
 
 export function generateGraphqlOutput(
-  items: GenerateGraphqlOutputItem[],
+  items: DeclareGraphqlOutputItem[],
   fname = 'generatedGraphql'
 ): string {
   let out: string[] = [];
@@ -67,8 +77,8 @@ export function generateGraphqlOutput(
       2,
       items.map(
         item =>
-          `const { ${item.queryField || item.mutationField} } = require('${
-            item.resolverPath
+          `const { ${fieldInvocation(item).varName} } = require('${
+            fieldInvocation(item).path
           }');`
       )
     )
@@ -77,7 +87,8 @@ export function generateGraphqlOutput(
     indents(
       2,
       items.map(
-        item => `const { ${item.queryMethod} } = require('${item.gqPath}');`
+        item =>
+          `const { ${item.query.varName} } = require('${item.query.path}');`
       )
     )
   );
@@ -88,7 +99,9 @@ export function generateGraphqlOutput(
       4,
       schema(
         'queries',
-        items.filter(item => item.queryField).map(item => item.queryField!)
+        items
+          .filter(item => item.queryField)
+          .map(item => item.queryField.varName)
       )
     )
   );
@@ -99,7 +112,7 @@ export function generateGraphqlOutput(
         'mutations',
         items
           .filter(item => item.mutationField)
-          .map(item => item.mutationField!)
+          .map(item => item.mutationField.varName)
       )
     )
   );
@@ -109,12 +122,12 @@ export function generateGraphqlOutput(
     out.push(indent(2, '{'));
     out = out.concat(
       indents(3, [
-        `const { ${item.outputType} } = require('${item.outputPath}');`,
+        `const { ${item.output.varName} } = require('${item.output.path}');`,
 
         // `${item.queryMethod}.inject(queryCollector.collect(${JSON.stringify(JSON.stringify(item))}), {}, generateOutputFromSchema(schema, ${item.outputType}));`,
-        `queryCollector.collect(${JSON.stringify(
+        `queryCollector.collect(JSON.parse(${JSON.stringify(
           JSON.stringify(item)
-        )}, graphqlOutputFromType(schema, ${item.outputType}));`
+        )}), graphqlOutputFromType(schema, ${item.output.varName}));`
       ])
     );
     out.push(indent(2, '}'));
