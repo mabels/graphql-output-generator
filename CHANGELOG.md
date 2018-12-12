@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.5.0"></a>
+# [1.5.0](https://github.com/mabels/graphql-output-generator/compare/v1.4.3...v1.5.0) (2018-12-12)
+
+
+### Features
+
+* removeGraphQLNulls ([db1dd76](https://github.com/mabels/graphql-output-generator/commit/db1dd76))
+
+
+
 <a name="1.4.3"></a>
 ## [1.4.3](https://github.com/mabels/graphql-output-generator/compare/v1.4.2...v1.4.3) (2018-12-06)
 
