@@ -1,4 +1,8 @@
-import { GenerateGraphqlOutputItem, DeclareGraphqlOutputItem } from './types';
+import {
+  GenerateGraphqlOutputItem,
+  DeclareGraphqlOutputItem,
+  quoteJsString
+} from './index';
 
 export class QueryCollector {
   public readonly queries: GenerateGraphqlOutputItem[] = [];
@@ -13,12 +17,16 @@ export class QueryCollector {
   writeInjectJavascript(): string {
     const ret: string[] = [];
     this.queries.forEach(item => {
+      ret.push('{');
       ret.push(
-        `const { ${item.query.varName} } = require('${item.query.path}');`
+        `var ${item.query.varName} = require(${quoteJsString(
+          item.query.path
+        )}).${item.query.varName};`
       );
       ret.push(
         `${item.query.varName}.inject(${JSON.stringify(item.outputQuery)});`
       );
+      ret.push('}');
     });
     return ret.join('\n');
   }

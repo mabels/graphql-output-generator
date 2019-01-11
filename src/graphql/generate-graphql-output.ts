@@ -1,6 +1,7 @@
 import * as path from 'path';
 import { indent, indents } from '../indent';
 import { DeclareGraphqlOutputItem, Invocation } from '../types';
+import { quoteJsString } from '../quote-js-string';
 // import { generateOutputFromSchema } from './graphql-output-from-type';
 // import { createSchema } from './create-schema';
 // import { QueryCollector } from './query-collector';
@@ -16,7 +17,7 @@ function schema(style: 'queries' | 'mutations', fields: string[]): string[] {
   const ret: string[] = [];
   ret.push(indent(0, `${style}: {`));
   fields.forEach(field => {
-    ret.push(indent(2, `${field}: ${field}(async () => ({})),`));
+    ret.push(indent(2, `${field}: ${field}({}),`));
   });
   ret.push(indent(0, '},'));
   return ret;
@@ -31,28 +32,25 @@ export function generateGraphqlOutput(
   out.push(
     indent(
       2,
-      `const { createSchema, } = require('${path.join(
-        __dirname,
-        './create-schema'
-      )}');`
+      `var createSchema = require(${quoteJsString(
+        path.join(__dirname, './create-schema')
+      )}).createSchema;`
     )
   );
   out.push(
     indent(
       2,
-      `const { QueryCollector } = require('${path.join(
-        __dirname,
-        '../query-collector'
-      )}');`
+      `var QueryCollector = require(${quoteJsString(
+        path.join(__dirname, '../query-collector')
+      )}).QueryCollector;`
     )
   );
   out.push(
     indent(
       2,
-      `const { graphqlOutputFromType } = require('${path.join(
-        __dirname,
-        './graphql-output-from-type'
-      )}');`
+      `var graphqlOutputFromType = require(${quoteJsString(
+        path.join(__dirname, './graphql-output-from-type')
+      )}).graphqlOutputFromType;`
     )
   );
   out = out.concat(
@@ -60,9 +58,9 @@ export function generateGraphqlOutput(
       2,
       items.map(
         item =>
-          `const { ${fieldInvocation(item).varName} } = require('${
+          `var ${fieldInvocation(item).varName} = require(${quoteJsString(
             fieldInvocation(item).path
-          }');`
+          )}).${fieldInvocation(item).varName};`
       )
     )
   );
@@ -71,12 +69,14 @@ export function generateGraphqlOutput(
       2,
       items.map(
         item =>
-          `const { ${item.query.varName} } = require('${item.query.path}');`
+          `var ${item.query.varName} = require(${quoteJsString(
+            item.query.path
+          )}).${item.query.varName};`
       )
     )
   );
-  out.push(indent(2, 'const queryCollector = new QueryCollector();'));
-  out.push(indent(2, 'const schema = createSchema({'));
+  out.push(indent(2, 'var queryCollector = new QueryCollector();'));
+  out.push(indent(2, 'var schema = createSchema({'));
   out = out.concat(
     indents(
       4,
@@ -105,7 +105,9 @@ export function generateGraphqlOutput(
     out.push(indent(2, '{'));
     out = out.concat(
       indents(3, [
-        `const { ${item.output.varName} } = require('${item.output.path}');`,
+        `var ${item.output.varName} = require(${quoteJsString(
+          item.output.path
+        )}).${item.output.varName};`,
 
         // `${item.queryMethod}.inject(queryCollector.collect(${JSON.stringify(JSON.stringify(item))}), {}, generateOutputFromSchema(schema, ${item.outputType}));`,
         `queryCollector.collect(JSON.parse(${JSON.stringify(

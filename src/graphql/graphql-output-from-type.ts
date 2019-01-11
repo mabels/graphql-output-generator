@@ -17,32 +17,34 @@ export function graphqlOutputFromType(
   level = 0
 ): string {
   if (t.getFields) {
-    Object.entries(t.getFields()).forEach(([_, v]) => {
-      const ql = (v as any) as Prepare;
-      if (!(ql.name && ql.type)) {
-        throw new Error(
-          `graphqlOutputFromType can not traverse without name and type`
-        );
-      }
-      // const found = schema.getTypeMap()[clean(ql.type)] as GraphQLObjectType;
-      // const o = [];
-      // for (const i in ql.type) {
-      //   o.push(i, typeof i, (ql.type as any)[i]);
-      // }
-      let found = ql.type;
-      if ((ql.type as any).ofType) {
-        found = (ql.type as any).ofType;
-      }
-      // console.log(ql.type, typeof ql.type, o);
-      if (found && found.getFields) {
-        // console.log(v, typeof(found), ql.type, found.getFields);
-        out.push(indent(level, `${ql.name} {`));
-        graphqlOutputFromType(schema, found, out, level + 1);
-        out.push(indent(level, `}`));
-      } else {
-        out.push(indent(level, ql.name));
-      }
-    });
+    Object.keys(t.getFields())
+      .map(k => t.getFields()[k])
+      .forEach(v => {
+        const ql = (v as any) as Prepare;
+        if (!(ql.name && ql.type)) {
+          throw new Error(
+            `graphqlOutputFromType can not traverse without name and type`
+          );
+        }
+        // const found = schema.getTypeMap()[clean(ql.type)] as GraphQLObjectType;
+        // const o = [];
+        // for (const i in ql.type) {
+        //   o.push(i, typeof i, (ql.type as any)[i]);
+        // }
+        let found = ql.type;
+        if ((ql.type as any).ofType) {
+          found = (ql.type as any).ofType;
+        }
+        // console.log(ql.type, typeof ql.type, o);
+        if (found && found.getFields) {
+          // console.log(v, typeof(found), ql.type, found.getFields);
+          out.push(indent(level, `${ql.name} {`));
+          graphqlOutputFromType(schema, found, out, level + 1);
+          out.push(indent(level, `}`));
+        } else {
+          out.push(indent(level, ql.name));
+        }
+      });
   } else {
     out.push(t.name);
   }

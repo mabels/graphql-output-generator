@@ -1,3 +1,5 @@
+import * as acorn from 'acorn';
+
 import { generateGraphqlOutput } from './generate-graphql-output';
 import { QueryCollector } from '../query-collector';
 import { createSchema, dummyQuery, dummyOutputType } from './create-schema';
@@ -66,7 +68,11 @@ test('test generate output', async () => {
   ];
   const jsEval = generateGraphqlOutput(toGenerate);
 
-  // console.log(jsEval);
+  expect(() => {
+    // console.log(`OJ`, jsEval);
+    acorn.parse(jsEval, { ecmaVersion: 5 });
+  }).not.toThrow();
+
   // tslint:disable-next-line:no-eval
   const generatedGraphql = eval(jsEval);
   const qc: QueryCollector = generatedGraphql();
@@ -95,8 +101,14 @@ test('test generate output', async () => {
   } catch (e) {
     expect(e.message).toBe('output of queryFunction was not injected');
   }
+
+  const js = qc.writeInjectJavascript();
+  expect(() => {
+    // console.log(`JO`, js);
+    acorn.parse(js, { ecmaVersion: 5 });
+  }).not.toThrow();
   // console.log(qc.writeInjectJavascript());
-  eval(qc.writeInjectJavascript());
+  eval(js);
   expect(await queryUpdateLocation(async q => q, {})).toBe(
     `TEST(${queryOutput})`
   );
