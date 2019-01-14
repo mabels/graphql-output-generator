@@ -1,6 +1,6 @@
 {
   "name": "graphql-output-generator",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "A query output generator from graphql output types. ",
   "main": "lib/index.js",
   "module": "esm/index.js",
