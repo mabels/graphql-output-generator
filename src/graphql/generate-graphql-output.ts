@@ -17,7 +17,11 @@ function schema(style: 'queries' | 'mutations', fields: string[]): string[] {
   const ret: string[] = [];
   ret.push(indent(0, `${style}: {`));
   fields.forEach(field => {
-    ret.push(indent(2, `${field}: ${field}({}),`));
+    if (style == 'queries') {
+      ret.push(indent(2, `${field}: ${field}(function() {}),`));
+    } else {
+      ret.push(indent(2, `${field}: ${field}(function() {}),`));
+    }
   });
   ret.push(indent(0, '},'));
   return ret;
