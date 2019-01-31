@@ -35,7 +35,7 @@
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "typescript": "3.2.4",
+    "typescript": "3.3.1",
     "@types/jest": "23.3.13",
     "@types/node": "10.12.20",
     "@types/graphql": "0.13.4",
