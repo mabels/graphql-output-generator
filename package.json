@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "typescript": "3.6.2",
-    "@types/jest": "26.0.6",
+    "@types/jest": "26.0.7",
     "@types/node": "10.12.24",
     "@types/graphql": "14.2.3",
     "@types/acorn": "4.0.5",
