@@ -40,7 +40,7 @@
     "@types/node": "14.17.0",
     "@types/graphql": "14.2.3",
     "@types/acorn": "4.0.5",
-    "husky": "4.3.8",
+    "husky": "6.0.0",
     "rimraf": "3.0.2",
     "acorn": "8.2.4",
     "jest": "24.9.0",
