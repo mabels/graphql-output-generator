@@ -31,7 +31,7 @@
     "postrelease": "git push --follow-tags origin master && npm publish"
   },
   "dependencies": {
-    "graphql": "^14.0.0",
+    "graphql": "^15.0.0",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
