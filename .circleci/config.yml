@@ -30,17 +30,17 @@ commands:
 jobs:
   node-v6:
     docker:
-      - image: node:6
+      - image: node:17
     steps:
       - test-nodejs
   node-v8:
     docker:
-      - image: node:8
+      - image: node:17
     steps:
       - test-nodejs
   node-v10:
     docker:
-      - image: node:10
+      - image: node:17
     steps:
       - test-nodejs
 
